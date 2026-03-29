@@ -1,0 +1,150 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --main-theme-color: 228 231 235;
+    --main-theme-color-muted: 193 200 209;
+    --main-theme-secondary-color: 148 163 184;
+    --main-theme-secondary-color-50: 248 250 252;
+    --main-theme-secondary-color-100: 241 245 249;
+    --main-theme-secondary-color-200: 226 232 240;
+    --main-theme-secondary-color-300: 203 213 225;
+    --main-theme-secondary-color-400: 148 163 184;
+    --main-theme-secondary-color-500: 100 116 139;
+    --main-theme-secondary-color-600: 71 85 105;
+    --main-theme-secondary-color-700: 51 65 85;
+    --main-theme-secondary-color-800: 30 41 59;
+    --main-theme-secondary-color-900: 15 23 42;
+    --surface-color-50: 243 245 247;
+    --surface-color-100: 214 219 225;
+    --surface-color-200: 168 176 185;
+    --surface-color-300: 125 134 145;
+    --surface-color-400: 89 98 110;
+    --surface-color-500: 55 63 74;
+    --surface-color-600: 36 42 51;
+    --surface-color-700: 24 29 37;
+    --surface-color-800: 15 19 26;
+    --surface-color-900: 8 11 16;
+    --page-background-color: 7 10 15;
+    --page-text-color: var(--main-theme-color);
+    --page-overlay-color: 23 28 36;
+    --page-overlay-secondary-color: 13 17 23;
+    --page-highlight-color: 255 255 255;
+    --page-accent-glow-color: var(--main-theme-secondary-color-400);
+    --main-theme-shadow-color: 0 0 0;
+    --text-selection-color: var(--main-theme-secondary-color-500);
+    --heading-text-color: 228 231 235;
+    --body-text-color: 193 200 209;
+    --body-text-strong-color: 214 219 225;
+    --muted-text-color: 168 176 185;
+    --inverse-text-color: 8 11 16;
+    --accent-text-color: 203 213 225;
+    --accent-text-strong-color: 241 245 249;
+    --card-background-color: 23 28 36;
+    --card-background-strong-color: 15 19 26;
+    --card-border-color: 89 98 110;
+    --dock-background-color: 15 19 26;
+    --dock-border-color: 255 255 255;
+    --theme-switcher-background-color: 9 13 19;
+    --theme-switcher-border-color: 168 176 185;
+    --theme-switcher-active-background-color: 228 231 235;
+    --theme-switcher-active-text-color: 8 11 16;
+    --theme-switcher-inactive-text-color: 168 176 185;
+    --theme-switcher-inactive-hover-text-color: 228 231 235;
+    --watermark-background-color: 15 19 26;
+    --watermark-border-color: 168 176 185;
+    --watermark-text-color: 193 200 209;
+
+    color-scheme: dark;
+
+    color: rgb(var(--page-text-color));
+    background-color: rgb(var(--page-background-color));
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  :root[data-theme='day'] {
+    --main-theme-color: 37 18 10;
+    --main-theme-color-muted: 70 39 23;
+    --main-theme-secondary-color: 85 118 69;
+    --main-theme-secondary-color-50: 244 248 242;
+    --main-theme-secondary-color-100: 227 239 223;
+    --main-theme-secondary-color-200: 197 221 185;
+    --main-theme-secondary-color-300: 159 192 139;
+    --main-theme-secondary-color-400: 115 152 96;
+    --main-theme-secondary-color-500: 85 118 69;
+    --main-theme-secondary-color-600: 65 91 52;
+    --main-theme-secondary-color-700: 48 67 38;
+    --main-theme-secondary-color-800: 30 45 24;
+    --main-theme-secondary-color-900: 15 22 12;
+    --surface-color-50: 246 242 234;
+    --surface-color-100: 239 230 215;
+    --surface-color-200: 223 201 170;
+    --surface-color-300: 203 166 124;
+    --surface-color-400: 186 132 84;
+    --surface-color-500: 168 107 59;
+    --surface-color-600: 137 81 45;
+    --surface-color-700: 105 60 34;
+    --surface-color-800: 70 39 23;
+    --surface-color-900: 37 18 10;
+    --page-background-color: var(--surface-color-50);
+    --page-text-color: var(--main-theme-color);
+    --page-overlay-color: 255 255 255;
+    --page-overlay-secondary-color: var(--surface-color-100);
+    --page-highlight-color: 255 255 255;
+    --page-accent-glow-color: var(--main-theme-secondary-color-200);
+    --main-theme-shadow-color: var(--main-theme-color);
+    --text-selection-color: var(--main-theme-secondary-color-400);
+    --heading-text-color: var(--surface-color-900);
+    --body-text-color: var(--surface-color-700);
+    --body-text-strong-color: var(--surface-color-800);
+    --muted-text-color: var(--surface-color-500);
+    --inverse-text-color: var(--surface-color-50);
+    --accent-text-color: var(--main-theme-secondary-color-600);
+    --accent-text-strong-color: var(--main-theme-secondary-color-700);
+    --card-background-color: 255 255 255;
+    --card-background-strong-color: var(--surface-color-100);
+    --card-border-color: var(--surface-color-200);
+    --dock-background-color: 255 255 255;
+    --dock-border-color: var(--surface-color-200);
+    --theme-switcher-background-color: var(--surface-color-100);
+    --theme-switcher-border-color: var(--surface-color-300);
+    --theme-switcher-active-background-color: var(--surface-color-900);
+    --theme-switcher-active-text-color: var(--surface-color-50);
+    --theme-switcher-inactive-text-color: var(--surface-color-600);
+    --theme-switcher-inactive-hover-text-color: var(--surface-color-900);
+    --watermark-background-color: 255 255 255;
+    --watermark-border-color: var(--surface-color-300);
+    --watermark-text-color: var(--surface-color-700);
+
+    color-scheme: light;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    min-width: 20rem;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  ::selection {
+    background-color: rgb(var(--text-selection-color) / 0.25);
+  }
+}
