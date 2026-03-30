@@ -67,10 +67,5 @@ const shouldRenderProtectedContent = computed(() => isAuthenticated.value);
       :is-checking-session="isCheckingSession"
       :message="authMessage"
     />
-    <div
-      class="pointer-events-none fixed bottom-4 right-4 z-40 rounded-full border border-[rgb(var(--watermark-border-color)/0.35)] bg-[rgb(var(--watermark-background-color)/0.7)] px-4 py-2 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[rgb(var(--watermark-text-color))] backdrop-blur"
-    >
-      Implemented in cooperation with Codex
-    </div>
   </div>
 </template>
