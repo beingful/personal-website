@@ -93,7 +93,7 @@ onMounted(() => {
     >
       <button
         type="button"
-        class="inline-flex h-11 w-11 items-center justify-center rounded-[1rem] border border-[rgb(var(--card-border-color)/0.25)] bg-[rgb(var(--card-background-color)/0.08)] text-[rgb(var(--heading-text-color))] transition hover:bg-[rgb(var(--card-background-color)/0.14)]"
+        class="inline-flex h-11 w-11 items-center justify-center rounded-[1rem] border border-[rgb(var(--accent-text-color)/0.3)] bg-[rgb(var(--surface-color-100)/0.24)] text-[rgb(var(--heading-text-color))] transition hover:bg-[rgb(var(--surface-color-100)/0.34)]"
         :aria-expanded="isSideDockExpanded"
         aria-controls="mobile-side-dock-navigation"
         :aria-label="mobileToggleLabel"
