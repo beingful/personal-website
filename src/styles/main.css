@@ -68,6 +68,12 @@
     scroll-behavior: smooth;
   }
 
+  html {
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
   :root[data-theme='day'] {
     --main-theme-color: 37 18 10;
     --main-theme-color-muted: 70 39 23;
@@ -132,6 +138,9 @@
   body {
     margin: 0;
     min-width: 20rem;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
 
   a {
@@ -146,5 +155,13 @@
 
   ::selection {
     background-color: rgb(var(--text-selection-color) / 0.25);
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar,
+  *::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
   }
 }

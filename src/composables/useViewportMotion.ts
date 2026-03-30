@@ -13,7 +13,9 @@ export const useViewportMotion = (): ViewportMotionState => {
   const translateY = ref(0);
   const scale = ref(1);
   const isReducedMotionPreferred = ref(false);
+  const isLaptopViewport = ref(false);
   let animationFrameId = 0;
+  let isMotionListenerAttached = false;
 
   const updateMotionState = (): void => {
     const element = motionRef.value;
@@ -45,20 +47,61 @@ export const useViewportMotion = (): ViewportMotionState => {
     });
   };
 
+  const detachMotionListeners = (): void => {
+    if (typeof window === 'undefined' || !isMotionListenerAttached) {
+      return;
+    }
+
+    window.removeEventListener('scroll', queueMotionUpdate);
+    window.removeEventListener('resize', queueMotionUpdate);
+    isMotionListenerAttached = false;
+  };
+
+  const attachMotionListeners = (): void => {
+    if (typeof window === 'undefined' || isMotionListenerAttached) {
+      return;
+    }
+
+    window.addEventListener('scroll', queueMotionUpdate, { passive: true });
+    window.addEventListener('resize', queueMotionUpdate);
+    isMotionListenerAttached = true;
+  };
+
   onMounted(() => {
     if (typeof window === 'undefined') {
       return;
     }
 
-    isReducedMotionPreferred.value = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reducedMotionMediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const laptopViewportMediaQuery = window.matchMedia(
+      '(min-width: 1280px) and (max-width: 1728px)'
+    );
+    const updateMotionPreferences = (): void => {
+      isReducedMotionPreferred.value = reducedMotionMediaQuery.matches;
+      isLaptopViewport.value = laptopViewportMediaQuery.matches;
 
-    if (isReducedMotionPreferred.value) {
-      return;
-    }
+      if (isReducedMotionPreferred.value || !isLaptopViewport.value) {
+        detachMotionListeners();
+        opacity.value = 1;
+        translateY.value = 0;
+        scale.value = 1;
+        return;
+      }
 
-    updateMotionState();
-    window.addEventListener('scroll', queueMotionUpdate, { passive: true });
-    window.addEventListener('resize', queueMotionUpdate);
+      attachMotionListeners();
+      updateMotionState();
+    };
+
+    updateMotionPreferences();
+
+    reducedMotionMediaQuery.addEventListener('change', updateMotionPreferences);
+    laptopViewportMediaQuery.addEventListener('change', updateMotionPreferences);
+
+    onBeforeUnmount(() => {
+      detachMotionListeners();
+      reducedMotionMediaQuery.removeEventListener('change', updateMotionPreferences);
+      laptopViewportMediaQuery.removeEventListener('change', updateMotionPreferences);
+    });
   });
 
   onBeforeUnmount(() => {
@@ -66,8 +109,7 @@ export const useViewportMotion = (): ViewportMotionState => {
       return;
     }
 
-    window.removeEventListener('scroll', queueMotionUpdate);
-    window.removeEventListener('resize', queueMotionUpdate);
+    detachMotionListeners();
 
     if (animationFrameId !== 0) {
       window.cancelAnimationFrame(animationFrameId);
@@ -75,7 +117,7 @@ export const useViewportMotion = (): ViewportMotionState => {
   });
 
   const motionStyle = computed<CSSProperties>(() => {
-    if (isReducedMotionPreferred.value) {
+    if (isReducedMotionPreferred.value || !isLaptopViewport.value) {
       return {};
     }
 
