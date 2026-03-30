@@ -51,6 +51,6 @@ const server = createServer(async (request, response) => {
   await router.routeRequest(request, response);
 });
 
-server.listen(serverConfig.port, () => {
-  console.log(`Server listening on http://localhost:${serverConfig.port}`);
+server.listen(serverConfig.port, serverConfig.host, () => {
+  console.log(`Server listening on http://${serverConfig.host}:${serverConfig.port}`);
 });
