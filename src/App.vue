@@ -54,14 +54,12 @@ watch(
 );
 
 const shouldShowGate = computed(() => !isAuthenticated.value);
+const shouldRenderProtectedContent = computed(() => isAuthenticated.value);
 </script>
 
 <template>
   <div class="min-h-screen bg-grain font-body text-surface-900">
-    <div
-      :class="shouldShowGate ? 'pointer-events-none select-none blur-sm' : ''"
-      :aria-hidden="shouldShowGate"
-    >
+    <div v-if="shouldRenderProtectedContent">
       <RouterView />
     </div>
     <SignInGate
