@@ -16,6 +16,7 @@ export interface ServerConfig {
   readonly azureBlobTypeHeaderValue: string;
   readonly azureStorageServiceVersion: string;
   readonly azureBlobVisitDirectoryUrl: string;
+  readonly host: string;
   readonly azureStorageAccountKey: string;
   readonly distDirectoryPath: string;
   readonly mimeTypeMap: Readonly<Record<string, string>>;

@@ -15,6 +15,7 @@ export const serverConfig: ServerConfig = {
     'https://hannakasaistorage.blob.core.windows.net/personal-website/visits/',
   azureStorageAccountKey: process.env.AZURE_STORAGE_ACCOUNT_KEY ?? '',
   azureStorageServiceVersion: process.env.AZURE_STORAGE_SERVICE_VERSION ?? '2023-11-03',
+  host: process.env.HOST ?? '0.0.0.0',
   distDirectoryPath: resolve(projectRootPath, 'dist'),
   mimeTypeMap: {
     '.css': 'text/css; charset=utf-8',
