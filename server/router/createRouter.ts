@@ -1,6 +1,7 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
 
 import type { AuthController } from '../controllers/authController';
+import type { HealthController } from '../controllers/healthController';
 import type { StaticController } from '../controllers/staticController';
 import type { RouteHandler } from '../types';
 
@@ -13,9 +14,11 @@ export interface Router {
 
 export const createRouter = ({
   authController,
+  healthController,
   staticController
 }: {
   readonly authController: AuthController;
+  readonly healthController: HealthController;
   readonly staticController: StaticController;
 }): Router => {
   const routeHandlers = new Map<string, RouteHandler>([
@@ -42,6 +45,10 @@ export const createRouter = ({
     [
       '/api/auth/name-access',
       (request, response) => authController.handleAnonymousAccessRequest(request, response)
+    ],
+    [
+      '/pulse',
+      (request, response) => healthController.handlePulseRequest(request, response)
     ]
   ]);
 
