@@ -66,55 +66,55 @@ const submitNameAccess = async (): Promise<void> => {
 </script>
 
 <template>
-  <div class="fixed inset-0 z-50 flex items-center justify-center bg-[rgb(var(--page-background-color)/0.78)] px-4 py-8 backdrop-blur-md">
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-[rgb(var(--page-background-color)/0.78)] px-3 py-4 backdrop-blur-md sm:px-4 sm:py-8">
     <div
-      class="w-[min(100%,48rem)] rounded-[2rem] border border-[rgb(var(--card-border-color)/0.45)] bg-[rgb(var(--card-background-color)/0.94)] px-[8%] py-[6%] shadow-soft"
+      class="sign-in-gate-panel w-[min(100%,48rem)] rounded-[1.5rem] border border-[rgb(var(--card-border-color)/0.45)] bg-[rgb(var(--card-background-color)/0.94)] px-[7%] py-[5%] shadow-soft sm:rounded-[2rem] sm:px-[8%] sm:py-[6%]"
     >
       <p class="text-sm font-semibold uppercase tracking-[0.24em] text-[rgb(var(--accent-text-color))]">
         Sign In Required
       </p>
-      <h1 class="mt-3 font-display text-[clamp(2rem,5vw,3.75rem)] leading-[0.96] text-[rgb(var(--heading-text-color))]">
+      <h1 class="mt-2 font-display text-[clamp(1.6rem,8vw,3.75rem)] leading-[0.94] text-[rgb(var(--heading-text-color))] sm:mt-3">
         Please sign in before accessing the website.
       </h1>
-      <p class="mt-4 max-w-[34rem] text-base leading-7 text-[rgb(var(--body-text-color))] sm:text-lg">
+      <p class="mt-3 max-w-[34rem] text-sm leading-6 text-[rgb(var(--body-text-color))] sm:mt-4 sm:text-base sm:leading-7 lg:text-lg">
         Use Google or Microsoft to continue. If you prefer not to share your email, you may continue by providing a name instead. The only information I request is a basic identifier for the visitor, preferably the name of your organization or, if you are visiting independently, your own name.
       </p>
 
-      <div class="mt-6 flex flex-wrap gap-3">
+      <div class="mt-4 flex flex-wrap gap-2.5 sm:mt-6 sm:gap-3">
         <a
           href="/auth/google/start"
-          class="inline-flex w-fit items-center justify-start gap-3 rounded-full bg-[rgb(var(--heading-text-color))] px-5 py-3 text-sm font-semibold text-[rgb(var(--inverse-text-color))] transition hover:bg-[rgb(var(--body-text-strong-color))]"
+          class="inline-flex w-fit items-center justify-start gap-2.5 rounded-full bg-[rgb(var(--heading-text-color))] px-4 py-2.5 text-sm font-semibold text-[rgb(var(--inverse-text-color))] transition hover:bg-[rgb(var(--body-text-strong-color))] sm:gap-3 sm:px-5 sm:py-3"
         >
           <img
             src="/media/icons/google-icon.png"
             alt=""
             aria-hidden="true"
-            class="h-6 w-6 object-contain"
+            class="h-5 w-5 object-contain sm:h-6 sm:w-6"
           >
           Continue with Google
         </a>
         <a
           href="/auth/microsoft/start"
-          class="inline-flex w-fit items-center justify-start gap-3 rounded-full bg-[rgb(var(--heading-text-color))] px-5 py-3 text-sm font-semibold text-[rgb(var(--inverse-text-color))] transition hover:bg-[rgb(var(--body-text-strong-color))]"
+          class="inline-flex w-fit items-center justify-start gap-2.5 rounded-full bg-[rgb(var(--heading-text-color))] px-4 py-2.5 text-sm font-semibold text-[rgb(var(--inverse-text-color))] transition hover:bg-[rgb(var(--body-text-strong-color))] sm:gap-3 sm:px-5 sm:py-3"
         >
           <img
             src="/media/icons/microsoft-icon.png"
             alt=""
             aria-hidden="true"
-            class="h-6 w-6 object-contain"
+            class="h-5 w-5 object-contain sm:h-6 sm:w-6"
           >
           Continue with Microsoft
         </a>
         <button
           type="button"
-          class="inline-flex w-fit items-center justify-start gap-3 rounded-full bg-[rgb(var(--heading-text-color))] px-5 py-3 text-sm font-semibold text-[rgb(var(--inverse-text-color))] transition hover:bg-[rgb(var(--body-text-strong-color))]"
+          class="inline-flex w-fit items-center justify-start gap-2.5 rounded-full bg-[rgb(var(--heading-text-color))] px-4 py-2.5 text-sm font-semibold text-[rgb(var(--inverse-text-color))] transition hover:bg-[rgb(var(--body-text-strong-color))] sm:gap-3 sm:px-5 sm:py-3"
           @click="showNameFlow"
         >
           <img
             src="/media/icons/anonymous-icon.png"
             alt=""
             aria-hidden="true"
-            class="h-6 w-6 object-contain"
+            class="h-5 w-5 object-contain sm:h-6 sm:w-6"
           >
           Continue without sharing e-mail
         </button>
@@ -122,18 +122,18 @@ const submitNameAccess = async (): Promise<void> => {
 
       <form
         v-if="isNameFlowVisible"
-        class="mt-5 space-y-3"
+        class="mt-4 space-y-2.5 sm:mt-5 sm:space-y-3"
         @submit.prevent="submitNameAccess"
       >
         <label class="block space-y-2">
-          <span class="text-sm font-semibold uppercase tracking-[0.18em] text-[rgb(var(--muted-text-color))]">
+          <span class="text-xs font-semibold uppercase tracking-[0.18em] text-[rgb(var(--muted-text-color))] sm:text-sm">
             Visitor name
           </span>
           <input
             v-model="visitorName"
             type="text"
             name="visitor-name"
-            class="w-full rounded-[1rem] border border-[rgb(var(--card-border-color)/0.65)] bg-[rgb(var(--card-background-color)/0.72)] px-4 py-3 text-base text-[rgb(var(--heading-text-color))] placeholder:text-[rgb(var(--muted-text-color))]"
+            class="w-full rounded-[1rem] border border-[rgb(var(--card-border-color)/0.65)] bg-[rgb(var(--card-background-color)/0.72)] px-4 py-2.5 text-sm text-[rgb(var(--heading-text-color))] placeholder:text-[rgb(var(--muted-text-color))] sm:py-3 sm:text-base"
             placeholder="Your name or organization"
             :disabled="isSubmittingName"
           >
@@ -148,7 +148,7 @@ const submitNameAccess = async (): Promise<void> => {
 
         <button
           type="submit"
-          class="inline-flex w-fit items-center justify-center rounded-full bg-[rgb(var(--heading-text-color))] px-5 py-3 text-sm font-semibold text-[rgb(var(--inverse-text-color))] transition hover:bg-[rgb(var(--body-text-strong-color))] disabled:cursor-not-allowed disabled:opacity-70"
+          class="inline-flex w-fit items-center justify-center rounded-full bg-[rgb(var(--heading-text-color))] px-4 py-2.5 text-sm font-semibold text-[rgb(var(--inverse-text-color))] transition hover:bg-[rgb(var(--body-text-strong-color))] disabled:cursor-not-allowed disabled:opacity-70 sm:px-5 sm:py-3"
           :disabled="isSubmittingName"
         >
           {{ isSubmittingName ? 'Submitting...' : 'Continue with name' }}
@@ -157,10 +157,18 @@ const submitNameAccess = async (): Promise<void> => {
 
       <p
         v-if="shouldShowFeedbackMessage"
-        class="mt-5 text-sm leading-6 text-[rgb(var(--body-text-strong-color))]"
+        class="mt-4 text-sm leading-5 text-[rgb(var(--body-text-strong-color))] sm:mt-5 sm:leading-6"
       >
         {{ submissionMessage || props.message }}
       </p>
     </div>
   </div>
 </template>
+
+<style scoped>
+@media (max-height: 720px) {
+  .sign-in-gate-panel {
+    padding: 1.25rem 1.5rem;
+  }
+}
+</style>
