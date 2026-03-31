@@ -2,6 +2,7 @@ import { createServer } from 'node:http';
 
 import { serverConfig } from './config';
 import { createAuthController } from './controllers/authController';
+import { createHealthController } from './controllers/healthController';
 import { createStaticController } from './controllers/staticController';
 import { createRouter } from './router/createRouter';
 import { createOAuthService } from './services/oauthService';
@@ -38,12 +39,15 @@ const authController = createAuthController({
   visitStorageService
 });
 
+const healthController = createHealthController();
+
 const staticController = createStaticController({
   staticFileService
 });
 
 const router = createRouter({
   authController,
+  healthController,
   staticController
 });
 
