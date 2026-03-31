@@ -58,8 +58,12 @@ watch(
   { immediate: true }
 );
 
-const shouldShowGate = computed(() => !isAuthenticated.value);
-const shouldRenderProtectedContent = computed(() => isAuthenticated.value);
+const shouldShowGate = computed(
+  () => !isCheckingSession.value && !isAuthenticated.value
+);
+const shouldRenderProtectedContent = computed(
+  () => !isCheckingSession.value && isAuthenticated.value
+);
 </script>
 
 <template>
