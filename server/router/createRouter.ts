@@ -38,6 +38,10 @@ export const createRouter = ({
     [
       '/api/auth/session',
       (request, response) => authController.handleAuthSessionRequest(request, response)
+    ],
+    [
+      '/api/auth/name-access',
+      (request, response) => authController.handleAnonymousAccessRequest(request, response)
     ]
   ]);
 

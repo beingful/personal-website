@@ -3,19 +3,28 @@ import { request as httpsRequest } from 'node:https';
 
 export interface VisitStorageService {
   appendVisit(email: string, providerKey: string): Promise<void>;
+  appendNamedVisit(name: string): Promise<void>;
+  isValidName(value: string): boolean;
   isValidEmail(value: string): boolean;
 }
 
 export const isValidEmail = (value: string): boolean => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+export const isValidName = (value: string): boolean => value.trim().length > 0;
 
 const normalizeDirectoryUrl = (directoryUrl: string): string =>
   directoryUrl.endsWith('/') ? directoryUrl : `${directoryUrl}/`;
 
-const buildBlobFileName = (email: string, visitedAt: string): string => {
+const buildBlobFileName = (identifier: string, visitedAt: string): string => {
   const normalizedTimestamp = visitedAt.replace(/:/g, '-');
-  const normalizedEmail = email.trim().toLowerCase();
+  const normalizedIdentifier = identifier
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, '_')
+    .replace(/[^a-z0-9._-]/g, '_')
+    .replace(/_+/g, '_')
+    .replace(/^_|_$/g, '');
 
-  return `${normalizedTimestamp}__${normalizedEmail}.json`;
+  return `${normalizedTimestamp}__${normalizedIdentifier || 'visitor'}.json`;
 };
 
 const buildAuthorizationHeader = ({
@@ -78,7 +87,7 @@ export const createVisitStorageService = ({
   readonly storageAccountKey: string;
   readonly storageServiceVersion: string;
 }): VisitStorageService => {
-  const appendVisit = async (email: string, providerKey: string): Promise<void> => {
+  const appendPayload = async (identifier: string, payload: Record<string, string>): Promise<void> => {
     const visitedAt = new Date().toISOString();
     const requestDate = new Date().toUTCString();
     const directoryUrl = new URL(normalizeDirectoryUrl(blobDirectoryUrl));
@@ -90,24 +99,23 @@ export const createVisitStorageService = ({
       throw new Error('Azure Blob visit directory URL is not valid.');
     }
 
-    const blobFileName = buildBlobFileName(email, visitedAt);
+    const blobFileName = buildBlobFileName(identifier, visitedAt);
     const blobName = [...directoryPathSegments, blobFileName].join('/');
     const blobUrl = new URL(directoryUrl.origin);
     const encodedBlobPath = blobName.split('/').map(encodeURIComponent).join('/');
 
     blobUrl.pathname = `/${containerName}/${encodedBlobPath}`;
 
-    const payload = JSON.stringify(
+    const requestPayload = JSON.stringify(
       {
-        email: email.trim().toLowerCase(),
-        providerKey,
+        ...payload,
         visitedAt
       },
       null,
       2
     );
     const contentType = 'application/json; charset=utf-8';
-    const contentLength = Buffer.byteLength(payload, 'utf8');
+    const contentLength = Buffer.byteLength(requestPayload, 'utf8');
     const headers: Record<string, string> = {
       'Content-Length': String(contentLength),
       'Content-Type': contentType,
@@ -165,13 +173,28 @@ export const createVisitStorageService = ({
       );
 
       request.on('error', reject);
-      request.write(payload, 'utf8');
+      request.write(requestPayload, 'utf8');
       request.end();
+    });
+  };
+
+  const appendVisit = async (email: string, providerKey: string): Promise<void> => {
+    await appendPayload(email, {
+      email: email.trim().toLowerCase(),
+      providerKey
+    });
+  };
+
+  const appendNamedVisit = async (name: string): Promise<void> => {
+    await appendPayload(name, {
+      name: name.trim()
     });
   };
 
   return {
     appendVisit,
+    appendNamedVisit,
+    isValidName,
     isValidEmail
   };
 };

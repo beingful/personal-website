@@ -8,6 +8,10 @@ import type { VisitStorageService } from '../services/visitStorageService';
 import type { OAuthProviderConfig } from '../types';
 
 export interface AuthController {
+  handleAnonymousAccessRequest(
+    request: IncomingMessage,
+    response: ServerResponse<IncomingMessage>
+  ): Promise<void>;
   handleAuthCallback(
     providerKey: string,
     request: IncomingMessage,
@@ -39,6 +43,79 @@ export const createAuthController = ({
   readonly publicAppUrl: string;
   readonly visitStorageService: VisitStorageService;
 }): AuthController => {
+  const createAuthenticatedSession = (
+    response: ServerResponse<IncomingMessage>,
+    redirectLocation?: string,
+    cookieHeaders: readonly string[] = []
+  ): void => {
+    const authSessionId = randomBytes(24).toString('hex');
+
+    authSessionStore.add(authSessionId);
+
+    const sessionCookieHeader = buildCookieHeader(
+      authSessionCookieName,
+      authSessionId,
+      authSessionCookieMaxAgeSeconds
+    );
+
+    if (redirectLocation) {
+      redirect(response, redirectLocation, [...cookieHeaders, sessionCookieHeader]);
+      return;
+    }
+
+    response.writeHead(204, {
+      'Set-Cookie': [...cookieHeaders, sessionCookieHeader]
+    });
+    response.end();
+  };
+
+  const readRequestBody = async (request: IncomingMessage): Promise<string> =>
+    await new Promise<string>((resolve, reject) => {
+      const chunks: Buffer[] = [];
+
+      request.on('data', (chunk) => {
+        chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+      });
+      request.on('end', () => {
+        resolve(Buffer.concat(chunks).toString('utf8'));
+      });
+      request.on('error', reject);
+    });
+
+  const handleAnonymousAccessRequest = async (
+    request: IncomingMessage,
+    response: ServerResponse<IncomingMessage>
+  ): Promise<void> => {
+    if (request.method !== 'POST') {
+      response.writeHead(405, { Allow: 'POST' });
+      response.end();
+      return;
+    }
+
+    try {
+      const requestBody = await readRequestBody(request);
+      const parsedBody = JSON.parse(requestBody) as { name?: unknown };
+      const name = typeof parsedBody.name === 'string' ? parsedBody.name.trim() : '';
+
+      if (!visitStorageService.isValidName(name)) {
+        sendJson(response, 400, {
+          message: 'Name is required and cannot be empty.'
+        });
+        return;
+      }
+
+      await visitStorageService.appendNamedVisit(name);
+      createAuthenticatedSession(response);
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : 'Unable to continue without sharing email.';
+
+      sendJson(response, 500, {
+        message
+      });
+    }
+  };
+
   const handleAuthStart = (providerKey: string, response: ServerResponse<IncomingMessage>): void => {
     try {
       const providerConfig = oauthProviderConfigMap[providerKey];
@@ -81,12 +158,8 @@ export const createAuthController = ({
       );
 
       await visitStorageService.appendVisit(email, providerKey);
-      const authSessionId = randomBytes(24).toString('hex');
-
-      authSessionStore.add(authSessionId);
-      redirect(response, `${publicAppUrl}/?auth=sign-in-success`, [
-        clearCookieHeader(providerConfig.stateCookieName),
-        buildCookieHeader(authSessionCookieName, authSessionId, authSessionCookieMaxAgeSeconds)
+      createAuthenticatedSession(response, `${publicAppUrl}/?auth=sign-in-success`, [
+        clearCookieHeader(providerConfig.stateCookieName)
       ]);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unexpected sign-in error.';
@@ -120,6 +193,7 @@ export const createAuthController = ({
   };
 
   return {
+    handleAnonymousAccessRequest,
     handleAuthCallback,
     handleAuthSessionRequest,
     handleAuthStart

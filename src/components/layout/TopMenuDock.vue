@@ -62,8 +62,9 @@ onMounted(() => {
 
 <template>
   <div class="h-20 lg:hidden" aria-hidden="true" />
+  <div class="hidden h-28 lg:block" aria-hidden="true" />
 
-  <div class="sticky top-0 z-30 hidden px-4 pt-4 lg:block">
+  <div class="fixed inset-x-0 top-0 z-30 hidden px-4 pt-4 lg:block">
     <BaseContainer class="w-[min(100%-2rem,86rem)]">
       <header
         class="flex flex-wrap items-center justify-between gap-4 rounded-[1.75rem] border border-[rgb(var(--dock-border-color)/0.18)] bg-[rgb(var(--dock-background-color)/0.82)] px-[4%] py-[1.1rem] shadow-soft backdrop-blur"
