@@ -9,11 +9,9 @@ const clamp = (value: number, min: number, max: number): number => Math.min(max,
 
 export const useViewportMotion = (): ViewportMotionState => {
   const motionRef = ref<HTMLElement | null>(null);
-  const opacity = ref(1);
   const translateY = ref(0);
   const scale = ref(1);
   const isReducedMotionPreferred = ref(false);
-  const isLaptopViewport = ref(false);
   let animationFrameId = 0;
   let isMotionListenerAttached = false;
 
@@ -31,7 +29,6 @@ export const useViewportMotion = (): ViewportMotionState => {
     const normalizedDistance = clamp(Math.abs(elementCenter - viewportCenter) / (viewportHeight * 0.8), 0, 1);
     const direction = elementCenter >= viewportCenter ? 1 : -1;
 
-    opacity.value = 1 - normalizedDistance * 0.6;
     translateY.value = normalizedDistance * 48 * direction;
     scale.value = 1 - normalizedDistance * 0.04;
   };
@@ -73,16 +70,11 @@ export const useViewportMotion = (): ViewportMotionState => {
     }
 
     const reducedMotionMediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const laptopViewportMediaQuery = window.matchMedia(
-      '(min-width: 1280px) and (max-width: 1728px)'
-    );
     const updateMotionPreferences = (): void => {
       isReducedMotionPreferred.value = reducedMotionMediaQuery.matches;
-      isLaptopViewport.value = laptopViewportMediaQuery.matches;
 
-      if (isReducedMotionPreferred.value || !isLaptopViewport.value) {
+      if (isReducedMotionPreferred.value) {
         detachMotionListeners();
-        opacity.value = 1;
         translateY.value = 0;
         scale.value = 1;
         return;
@@ -95,12 +87,10 @@ export const useViewportMotion = (): ViewportMotionState => {
     updateMotionPreferences();
 
     reducedMotionMediaQuery.addEventListener('change', updateMotionPreferences);
-    laptopViewportMediaQuery.addEventListener('change', updateMotionPreferences);
 
     onBeforeUnmount(() => {
       detachMotionListeners();
       reducedMotionMediaQuery.removeEventListener('change', updateMotionPreferences);
-      laptopViewportMediaQuery.removeEventListener('change', updateMotionPreferences);
     });
   });
 
@@ -117,15 +107,14 @@ export const useViewportMotion = (): ViewportMotionState => {
   });
 
   const motionStyle = computed<CSSProperties>(() => {
-    if (isReducedMotionPreferred.value || !isLaptopViewport.value) {
+    if (isReducedMotionPreferred.value) {
       return {};
     }
 
     return {
-      opacity: String(opacity.value),
       transform: `translate3d(0, ${translateY.value}px, 0) scale(${scale.value})`,
-      transition: 'opacity 180ms linear, transform 180ms linear',
-      willChange: 'opacity, transform'
+      transition: 'transform 180ms linear',
+      willChange: 'transform'
     };
   });
 

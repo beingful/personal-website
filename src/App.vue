@@ -25,6 +25,11 @@ const loadAuthenticationState = async (): Promise<void> => {
   }
 };
 
+const handleAuthenticationSucceeded = async (): Promise<void> => {
+  authMessage.value = '';
+  await loadAuthenticationState();
+};
+
 onMounted(() => {
   const currentUrl = new URL(window.location.href);
   const authStatus = currentUrl.searchParams.get('auth');
@@ -66,6 +71,7 @@ const shouldRenderProtectedContent = computed(() => isAuthenticated.value);
       v-if="shouldShowGate"
       :is-checking-session="isCheckingSession"
       :message="authMessage"
+      @authenticated="handleAuthenticationSucceeded"
     />
   </div>
 </template>

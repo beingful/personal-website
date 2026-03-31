@@ -74,11 +74,6 @@ export interface EducationItem {
   readonly details: string;
 }
 
-export interface JobPreferenceItem {
-  readonly title: string;
-  readonly description: string;
-}
-
 export interface ResumeDocument {
   readonly title: string;
   readonly summary: string;
@@ -96,7 +91,6 @@ export interface SiteContent {
   readonly heroStats: readonly StatItem[];
   readonly certificates: readonly CertificateItem[];
   readonly experience: readonly ExperienceItem[];
-  readonly jobPreferences: readonly JobPreferenceItem[];
   readonly skillGroups: readonly SkillGroup[];
   readonly projects: readonly ProjectItem[];
   readonly education: readonly EducationItem[];

@@ -8,7 +8,6 @@ export const siteContent: SiteContent = {
   location: 'Open to relocation. Looking for software engineering opportunities centered on backend and cloud development, with selective fullstack product work.',
   navigation: [
     { label: 'Experience', href: '#experience' },
-    { label: 'Looking For', href: '#looking-for' },
     { label: 'Skills', href: '#skills' },
     { label: 'Projects', href: '#projects' },
     { label: 'Education', href: '#education' },
@@ -72,33 +71,6 @@ export const siteContent: SiteContent = {
         'Worked across backend and broader application delivery in a .NET and JavaScript stack.',
         'Partnered with customers to clarify and implement requested functionality.'
       ]
-    }
-  ],
-  jobPreferences: [
-    {
-      title: 'Strong teams with room to learn',
-      description:
-        'I am looking for an environment with experienced professionals, thoughtful collaboration, and the chance to keep learning from the people around me.'
-    },
-    {
-      title: 'Backend-driven work with broad technical exposure',
-      description:
-        'The best fit is backend-driven development with meaningful cloud and systems work, while still allowing occasional fullstack contribution when it helps move the product forward.'
-    },
-    {
-      title: 'Varied, substantive engineering problems',
-      description:
-        'I am most engaged by roles that offer a wide range of interesting tasks, practical responsibility, and exposure to different tools and technologies.'
-    },
-    {
-      title: 'A voice in the product and technical direction',
-      description:
-        'I want to contribute in brainstorming, technical discussions, and implementation decisions rather than operate only at the execution edge.'
-    },
-    {
-      title: 'Growth, ownership, and range',
-      description:
-        'I value opportunities to work both in a team and independently, expand into new domains, grow as a specialist, and earn greater responsibility over time.'
     }
   ],
   skillGroups: [

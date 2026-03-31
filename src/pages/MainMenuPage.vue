@@ -6,7 +6,6 @@ import ContactSection from '@/components/sections/ContactSection.vue';
 import EducationSection from '@/components/sections/EducationSection.vue';
 import ExperienceSection from '@/components/sections/ExperienceSection.vue';
 import HeroSection from '@/components/sections/HeroSection.vue';
-import JobPreferencesSection from '@/components/sections/JobPreferencesSection.vue';
 import LanguagesSection from '@/components/sections/LanguagesSection.vue';
 import LinksSection from '@/components/sections/LinksSection.vue';
 import ProjectsSection from '@/components/sections/ProjectsSection.vue';
@@ -37,7 +36,6 @@ const { activeThemeMode, setThemeMode } = useThemeMode();
         :stats="content.heroStats"
       />
       <ExperienceSection :items="content.experience" />
-      <JobPreferencesSection :items="content.jobPreferences" />
       <SkillsSection :items="content.skillGroups" />
       <ProjectsSection :items="content.projects" />
       <EducationSection :items="content.education" />
