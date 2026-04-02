@@ -32,6 +32,7 @@ export const siteContent: SiteContent = {
     {
       title: 'Microsoft Certified: Azure Developer Associate',
       issuer: 'Microsoft',
+      documentPreviewHref: '/media/certificates/hanna-kasai-az-204-certificate.pdf#view=FitH',
       href: 'https://learn.microsoft.com/en-us/users/kasaihanna-1251/credentials/eadd63704f0d4047?ref=https%3A%2F%2Fwww.linkedin.com%2F'
     }
   ],

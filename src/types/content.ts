@@ -25,6 +25,7 @@ export interface HighlightCard {
 export interface CertificateItem {
   readonly title: string;
   readonly issuer: string;
+  readonly documentPreviewHref: string;
   readonly href?: string;
 }
 

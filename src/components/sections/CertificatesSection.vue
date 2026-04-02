@@ -30,6 +30,14 @@ defineProps<CertificatesSectionProps>();
           <h3 class="mt-4 font-display text-2xl leading-tight text-[rgb(var(--heading-text-color))]">
             {{ item.title }}
           </h3>
+          <div class="mt-5 overflow-hidden rounded-[1.5rem] border border-[rgb(var(--card-border-color)/0.45)] bg-[rgb(var(--page-background-color)/0.45)]">
+            <iframe
+              :src="item.documentPreviewHref"
+              :title="`${item.title} preview`"
+              class="h-[24rem] w-full bg-white"
+              loading="lazy"
+            />
+          </div>
           <a
             v-if="item.href"
             :href="item.href"
